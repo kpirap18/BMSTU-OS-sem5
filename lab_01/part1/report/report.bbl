@@ -1,0 +1,68 @@
+\begin{thebibliography}{1}
+\def\selectlanguageifdefined#1{
+\expandafter\ifx\csname date#1\endcsname\relax
+\else\language\csname l@#1\endcsname\fi}
+\ifx\undefined\url\def\url#1{{\small #1}}\else\fi
+\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi
+\ifx\undefined\BibAnnote\long\def\BibAnnote#1{(#1)}\else\fi
+\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi
+
+\bibitem{Levenshtein}
+\selectlanguageifdefined{russian}
+Левенштейн~В.~И. Двоичные коды с
+  исправлением выпадений, вставок и
+  замещений символов.
+\newblock -- М.: Доклады АН СССР, 1965.
+\newblock Т.~163.
+\newblock {С.}~845--848.
+
+\bibitem{cache}
+\selectlanguageifdefined{russian}
+Кеш -- Википедия [Электронный ресурс].
+\newblock Режим доступа: \url{https://ru.wikipedia.org/wiki/Кэш}
+  (дата обращения: 03.09.2021).
+
+\bibitem{Dameray_Levenshtein}
+\selectlanguageifdefined{russian}
+Черненький В.~М.~Гапанюк Ю.~Е. Методика
+  идентификации пассажира по установочным
+  данным.
+\newblock -- М.: Вестник МГТУ им. Н.Э. Баумана. Сер.
+  “Приборостроение”, 2012.
+\newblock Т.~163.
+\newblock {С.}~30--34.
+
+\bibitem{pythonlang}
+\selectlanguageifdefined{russian}
+Welcome to Python [Электронный ресурс].
+\newblock Режим доступа: \url{https://www.python.org} (дата
+  обращения: 04.09.2021).
+
+\bibitem{pythonlangtime}
+\selectlanguageifdefined{russian}
+time — Time access and conversions [Электронный ресурс].
+\newblock Режим доступа:
+  \url{https://docs.python.org/3/library/time.html#functions} (дата
+  обращения: 04.09.2021).
+
+\bibitem{ubuntu}
+\selectlanguageifdefined{russian}
+Ubuntu 20.04.3 LTS (Focal Fossa) [Электронный ресурс].
+\newblock Режим доступа: \url{https://releases.ubuntu.com/20.04/}
+  (дата обращения: 04.09.2021).
+
+\bibitem{linux}
+\selectlanguageifdefined{russian}
+Linux -- Википедия [Электронный ресурс].
+\newblock Режим доступа: \url{https://ru.wikipedia.org/wiki/Linux}
+  (дата обращения: 04.09.2021).
+
+\bibitem{intel}
+\selectlanguageifdefined{russian}
+Процессор Intel® Core™ i5-1135G7 [Электронный
+  ресурс].
+\newblock Режим доступа:
+  \url{https://www.intel.ru/content/www/ru/ru/products/sku/208658/intel-core-i51135g7-processor-8m-cache-up-to-4-20-ghz/specifications.html}
+  (дата обращения: 04.09.2021).
+
+\end{thebibliography}

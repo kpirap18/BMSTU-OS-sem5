@@ -1,0 +1,206 @@
+\chapter{Технологическая часть}
+
+В данном разделе будут приведены требования к программному обеспечению, средства реализации и листинги кода.
+
+\section{Требования к ПО}
+
+К программе предъявляется ряд требований:
+\begin{itemize}
+	\item у пользователя есть выбор алгоритма, или какой-то один, или все сразу, а также есть выбор тестирования времени;
+	\item на вход подаются две строки на русском или английском языке в любом регистре;
+	\item на выходе — искомое расстояние для выбранного метода (выбранных методов) и матрицы расстояний для матричных реализаций.
+\end{itemize}
+
+\section{Средства реализации}
+
+В качестве языка программирования для реализации данной лабораторной работы был выбран ЯП Python \cite{pythonlang}. 
+
+Данный язык достаточно удобен и гибок в использовании. 
+
+Время работы алгоритмов было замерено с помощью функции process\_time() из библиотеки time \cite{pythonlangtime}
+
+\section{Сведения о модулях программы}
+Программа состоит из двух модулей:
+\begin{enumerate}
+	\item main.py - главный файл программы, в котором располагаются коды всех алгоритмов и меню;
+	\item test.py - файл с замерами времени для графического изображения результата.
+\end{enumerate}
+
+
+\section{Листинг кода}
+
+ В листингах \ref{lst:lev_rec}, \ref{lst:lev_mat}, \ref{lst:lev_rec_mat}, \ref{lst:dlev} приведены реализации алгоритмов нахождения расстояния Левенштейна и Дамерау--Левенштейна.
+
+\begin{lstlisting}[label=lst:lev_rec,caption=Функция нахождения расстояния Левенштейна с использованием рекурсии.]
+def levenshtein_recursive(str1, str2, out_put = False):
+	n = len(str1)
+	m = len(str2)
+	
+	if n == 0 or m == 0:
+		return abs(n - m)
+	
+	flag = 0
+	if str1[-1] != str2[-1]:
+		flag = 1
+	
+	min_lev_rec = min(levenshtein_recursive(str1[:-1], str2) + 1,
+					  levenshtein_recursive(str1, str2[:-1]) + 1,
+					  levenshtein_recursive(str1[:-1], str2[:-1]) + flag)
+	
+	return min_lev_rec
+	
+\end{lstlisting}
+
+\begin{lstlisting}[label=lst:lev_mat,caption=Функция нахождения расстояния Левенштейна с использованием рекурсии.]
+def levenshtein_matrix(str1, str2, out_put = True):
+	n = len(str1)
+	m = len(str2)
+	
+	matrix = create_matrix(n + 1, m + 1)
+	
+	for i in range(1, n + 1):
+		for j in range(1, m + 1):
+			add, delete, change = matrix[i - 1][j] + 1,\
+								  matrix[i][j - 1] + 1,\
+						    	  matrix[i - 1][j - 1]
+			if str2[j - 1] != str1[i - 1]:
+				change += 1
+			else:
+				change += 0
+			
+			matrix[i][j] = min(add, delete, change)
+	
+	if out_put:
+		print_matrix(str1, str2, matrix)
+	
+	return matrix[n][m]
+	
+\end{lstlisting}
+
+\begin{lstlisting}[label=lst:lev_rec_mat,caption=Функция нахождения расстояния Левенштейна с использованием рекурсии.]
+def levenshtein_matrix_recursive(str1, str2, out_put = True):
+	n = len(str1)
+	m = len(str2)
+	
+	def recursive(str1, str2, n, m, matrix):
+		if (matrix[n][m] != -1):
+			return matrix[n][m]
+		
+		if (n == 0):
+			matrix[n][m] = m
+			return matrix[n][m]
+		
+		if (n > 0 and m == 0):
+			matrix[n][m] = n
+			return matrix[n][m]
+		
+		delete = recursive(str1, str2, n - 1, m, matrix) + 1
+		add = recursive(str1, str2, n, m - 1, matrix) + 1
+		
+		flag = 0
+		
+		if (str1[n - 1] != str2[m - 1]):
+			flag = 1
+		
+		change = recursive(str1, str2, n - 1, m - 1, matrix) + flag
+		
+		matrix[n][m] = min(add, delete, change)
+		
+		return matrix[n][m]
+	
+	matrix =  create_matrix(n + 1, m + 1)
+	
+	for i in range(n + 1):
+		for j in range(m + 1):
+			matrix[i][j] = -1
+	
+	recursive(str1, str2, n, m, matrix)
+	
+	if out_put:
+		print_matrix(str1, str2, matrix)
+	
+	return matrix[n][m]
+	
+\end{lstlisting}
+
+\begin{lstlisting}[label=lst:dlev,caption=Функция нахождения расстояния Левенштейна с использованием рекурсии.]
+def damerau_levenshtein_recursive(str1, str2, out_put = False):
+	n = len(str1)
+	m = len(str2)
+	
+	if n == 0 or m == 0:
+		if n != 0:
+			return n
+		if m != 0:
+			return m
+		return 0
+	
+	change = 0
+	if str1[-1] != str2[-1]:
+		change += 1
+	
+	if n > 1 and m > 1 and str1[-1] == str2[-2] \
+		and str1[-2] == str2[-1]:
+		min_ret = min(damerau_levenshtein_recursive(str1[:n - 1], str2) + 1,
+					  damerau_levenshtein_recursive(str1, str2[:m - 1]) + 1,
+				      damerau_levenshtein_recursive(str1[:n - 1], str2[:m - 1]) + change,
+		              damerau_levenshtein_recursive(str1[:n - 2], str2[:m - 2]) + 1)
+	else:
+		min_ret = min(damerau_levenshtein_recursive(str1[:n - 1], str2) + 1,
+		              damerau_levenshtein_recursive(str1, str2[:m - 1]) + 1,
+		              damerau_levenshtein_recursive(str1[:n - 1], str2[:m - 1]) + change)
+	return min_ret
+	
+\end{lstlisting}
+
+\section{Функциональные тесты}
+В таблице \ref{tabular:functional_test} приведены функциональные тесты для алгоритмов вычисления расстояния Левенштейна (в таблице столбец подписан "Левенштейн") и Дамерау — Левенштейна (в таблице - "Дамерау-Л."). Все тесты пройдены успешно.
+
+
+\begin{table}[h]
+	\begin{center}
+		\caption{\label{tabular:functional_test} Функциональные тесты}
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			& & & \multicolumn{2}{c|}{Ожидаемый результат} \\
+			\hline
+			№&Строка 1&Строка 2&Левенштейн&Дамерау-Л. \\
+			\hline
+			1&скат&кот&2&2 \\
+			\hline
+			2&машина&малина&1&1 \\
+			\hline
+			3&дворик&доврик&2&1 \\
+			\hline
+			4&"пустая строка"&университет&11&11 \\
+			\hline
+			5&сентябрь&"пустая строка"&8&8 \\
+			\hline
+			8&тело&телодвижение&8&8 \\
+			\hline
+			9&ноутбук&планшет&7&7 \\
+			\hline
+			10&глина&малина&2&2 \\
+			\hline
+			11&рекурсия&ркерусия&3&2 \\
+			\hline
+			12&браузер&баурзер&2&2 \\
+			\hline
+			13&bring&brought&4&4 \\
+			\hline
+			14&moment&minute&4&4 \\ 
+			\hline
+			15&person&eye&5&5 \\
+			\hline
+			16&week&weekend&3&3 \\
+			\hline 
+			17&city&town&4&4 \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+
+\section*{Вывод}
+
+Были разработаны и протестированы алгоритмы: нахождения расстояния Левенштейна рекурсивно, с заполнением матрицы и рекурсивно с заполнением матрицы, а также нахождения расстояния Дамерау — Левенштейна рекурсивно.

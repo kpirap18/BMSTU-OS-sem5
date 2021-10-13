@@ -1,0 +1,31 @@
+This is 8-bit Big BibTeX version 0.99d
+Implementation:  Microsoft(R) C/C++ for Win32
+Release version: 3.71 (04 mar 2019)
+
+The 8-bit codepage and sorting file: 88591lat.csf
+The top-level auxiliary file: report.aux
+A level-1 auxilliary file: 00-title.aux
+A level-1 auxilliary file: 01-contents.aux
+A level-1 auxilliary file: 02-intro.aux
+A level-1 auxilliary file: 10-analysis.aux
+A level-1 auxilliary file: 20-design.aux
+A level-1 auxilliary file: 30-impl.aux
+A level-1 auxilliary file: 40-research.aux
+A level-1 auxilliary file: 50-conclusion.aux
+A level-1 auxilliary file: 51-biblio.aux
+The style file: utf8gost705u.bst
+Reallocated glb_str_ptr (elt_size=4) to 10 items from 0.
+Reallocated global_strs (elt_size=200001) to 10 items from 0.
+Reallocated glb_str_end (elt_size=4) to 10 items from 0.
+Database file #1: 51-biblio.bib
+Warning--empty booktitle in Levenshtein
+Warning--empty booktitle in Dameray_Levenshtein
+
+Here's how much of BibTeX's memory you used:
+ Cites:                 8 out of 750
+ Fields:              212 out of 5000
+ Hash table:       199776 out of 200000
+ Strings:             706 out of 200000
+ Free string pool:   7055 out of 65000
+ Wizard functions:   2958 out of 3000
+(There were 2 warnings)

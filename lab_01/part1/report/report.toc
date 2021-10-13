@@ -1,0 +1,25 @@
+\babel@toc {russian}{}\relax 
+\contentsline {chapter}{Введение}{3}{chapter*.2}%
+\contentsline {chapter}{\numberline {1}Аналитическая часть}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Рекурсивный алгоритм нахождения расстояния Левенштейна}{5}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Матричный алгоритм нахождения расстояния Левенштейна}{7}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Рекурсивный алгоритм нахождения расстояния Левенштейна с использованием кеша}{7}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Расстояние Дамерау — Левенштейна}{8}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Конструкторская часть}{10}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Требования к вводу}{10}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Требования к программе}{10}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Схема алгоритма нахождения расстояния Левенштейна}{10}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Схема алгоритма нахождения расстояния Дамерау — Левенштейна}{11}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Технологическая часть}{16}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Требования к ПО}{16}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Средства реализации}{16}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Сведения о модулях программы}{16}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Листинг кода}{17}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Функциональные тесты}{20}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Исследовательская часть}{22}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Технические характеристики}{22}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Демонстрация работы программы}{22}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Время выполнения алгоритмов}{22}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Использование памяти}{25}{section.4.4}%
+\contentsline {chapter}{Заключение}{28}{chapter*.13}%
+\contentsline {chapter}{Литература}{29}{chapter*.13}%
