@@ -1,58 +1,28 @@
-This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
-Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+This is 8-bit Big BibTeX version 0.99d
+Implementation:  Microsoft(R) C/C++ for Win32
+Release version: 3.71 (04 mar 2019)
+
+The 8-bit codepage and sorting file: 88591lat.csf
 The top-level auxiliary file: report.aux
 I couldn't open style file utf8gost705u.bst
----line 21 of file report.aux
+---line 30 of file report.aux
  : \bibstyle{utf8gost705u
  :                       }
 I'm skipping whatever remains of this command
 I couldn't open database file 51-biblio.bib
----line 22 of file report.aux
+---line 31 of file report.aux
  : \bibdata{51-biblio
  :                   }
 I'm skipping whatever remains of this command
 I found no \citation commands---while reading file report.aux
 I found no database files---while reading file report.aux
 I found no style file---while reading file report.aux
-You've used 0 entries,
-            0 wiz_defined-function locations,
-            85 strings with 507 characters,
-and the built_in function-call counts, 0 in all, are:
-= -- 0
-> -- 0
-< -- 0
-+ -- 0
-- -- 0
-* -- 0
-:= -- 0
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
-chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 0
-format.name$ -- 0
-if$ -- 0
-int.to.chr$ -- 0
-int.to.str$ -- 0
-missing$ -- 0
-newline$ -- 0
-num.names$ -- 0
-pop$ -- 0
-preamble$ -- 0
-purify$ -- 0
-quote$ -- 0
-skip$ -- 0
-stack$ -- 0
-substring$ -- 0
-swap$ -- 0
-text.length$ -- 0
-text.prefix$ -- 0
-top$ -- 0
-type$ -- 0
-warning$ -- 0
-while$ -- 0
-width$ -- 0
-write$ -- 0
+
+Here's how much of BibTeX's memory you used:
+ Cites:                 0 out of 750
+ Fields:                0 out of 5000
+ Hash table:       200001 out of 200000
+ Strings:              83 out of 200000
+ Free string pool:    490 out of 65000
+ Wizard functions:      0 out of 3000
 (There were 5 error messages)

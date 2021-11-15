@@ -26,7 +26,7 @@
 
 % Для листинга кода:
 \lstset{ %
-language=haskell,                 % выбор языка для подсветки (здесь это С)
+language=C,                 % выбор языка для подсветки (здесь это С)
 basicstyle=\small\sffamily, % размер и начертание шрифта для подсветки кода
 numbers=left,               % где поставить нумерацию строк (слева\справа)
 numberstyle=\tiny,           % размер шрифта для номеров строк
@@ -39,7 +39,7 @@ frame=single,              % рисовать рамку вокруг кода
 tabsize=2,                 % размер табуляции по умолчанию равен 2 пробелам
 captionpos=t,              % позиция заголовка вверху [t] или внизу [b] 
 breaklines=true,           % автоматически переносить строки (да\нет)
-breakatwhitespace=false, % переносить строки только если есть пробел
+breakatwhitespace=true, % переносить строки только если есть пробел
 escapeinside={\#*}{*)}   % если нужно добавить комментарии в коде
 }
 
@@ -100,7 +100,7 @@ escapeinside={\#*}{*)}   % если нужно добавить коммента
 \end{titlepage}
 
 \newpage
-
+\setcounter{page}{2}
 \section*{Задание №1}
 
 Процессы-сироты. В программе создаются не менее двух потомков. В потомках вызывается sleep(). Чтобы предок гарантированно завершился раньше своих помков. Продемонстрировать с помощью соответствующего вывода информацию об идентификаторах процессов и их группе.
@@ -133,11 +133,11 @@ int main()
 			perror("Can\'t fork()\n");
 			return FORK_FAILURE;
 		}
-		else if (!child_pid)
+		else if (child_pid == 0)
 		{
-            printf("BEFORE SLEEP Child %d! PID: %d, PPID: %d, GROUP: %d \n", i + 1, getpid(), getppid(), getpgrp());
+			printf("BEFORE SLEEP Child %d! PID: %d, PPID: %d, GROUP: %d \n", i + 1, getpid(), getppid(), getpgrp());
 			sleep(TIME_SLEEP);
-            printf("AFTER SLEEP Child %d! PID: %d, PPID: %d, GROUP: %d\n", i + 1, getpid(), getppid(), getpgrp());
+			printf("AFTER SLEEP Child %d! PID: %d, PPID: %d, GROUP: %d\n",   i + 1, getpid(), getppid(), getpgrp());
 			exit(OK);
 		}
 		else
@@ -210,9 +210,9 @@ int main()
 			perror("Can\'t fork()\n");
 			return FORK_FAILURE;
 		}
-		else if (!child_pid)
+		else if (child_pid == 0)
 		{
-            printf("Child %d! PID: %d, PPID: %d, GROUP: %d\n", i + 1, getpid(), getppid(), getpgrp());
+			printf("Child %d! PID: %d, PPID: %d, GROUP: %d\n", i + 1,   getpid(), getppid(), getpgrp());
 			exit(OK);
 		}     
 		else
@@ -298,7 +298,7 @@ int main()
 			perror("Can\'t fork()\n");
 			return FORK_FAILURE;
 		}
-		else if (!child_pid)
+		else if (child_pid == 0)
 		{
 			printf("Child %d! PID: %d, PPID: %d, GROUP: %d\n", i + 1, getpid(), getppid(), getpgrp());
 			int rc = execlp(com[i], com[i], NULL);
@@ -313,7 +313,7 @@ int main()
 		}        
 		else
 		{
-		child[i] = child_pid;
+			child[i] = child_pid;
 		}
 	}
 	
@@ -500,7 +500,7 @@ int main()
 			perror("Can\'t fork()\n");
 			return ERR_FORK;
 		}
-		else if (!child_pid)
+		else if (child_pid == 0)
 		{
 			close(fd[0]);
 			write(fd[1], mes[i], strlen(mes[i]));
@@ -620,17 +620,17 @@ int main()
 			perror("Can\'t fork()\n");
 			return ERR_FORK;
 		}
-		else if (!child_pid)
+		else if (child_pid == 0)
 		{
-		if (flag)
-		{
-			close(fd[0]);
-			write(fd[1], mes[i], strlen(mes[i]));
-            printf("Message %d sent to parent! %s", i + 1, mes[i]);
-
-		}
-		
-		return OK;
+			if (flag)
+			{
+				close(fd[0]);
+				write(fd[1], mes[i], strlen(mes[i]));
+	            printf("Message %d sent to parent! %s", i + 1, mes[i]);
+	
+			}
+			
+			return OK;
 		}        
 		else
 		{

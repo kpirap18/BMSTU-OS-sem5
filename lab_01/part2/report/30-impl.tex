@@ -1,0 +1,295 @@
+\chapter{Технологическая часть}
+В данном разделе будут приведены требования к программному обеспечению, средства реализации и листинги кода.
+
+\section{Выбор языка программирования}
+
+В данной лабораторной работе использовался язык программирования - С \cite{lang_c}. Данный язык предоставляет удобные инструменты для работы со структурой данных и обеспечивает хорошую производительность программного продукта.
+ 
+В качестве среды разработки выбор сделан в сторону Visual Studio Code \cite{wind}. Данная среда подходит как для Windows, так и для Linux.
+
+\section{Сведения о модулях программы}
+Программа состоит из одного модуля
+\begin{itemize}
+	\item main.c -- главный файл программы, в которых располагается точка входа;
+	\item bforce.c -- файл для реализации алгоритма полного перебора;
+	\item ant\_algoritm.c -- файл для реализации муравьиного алгоритма;
+	\item array.c -- файл для организации списка (массива);
+	\item matrix.c -- файл для работы с матрицей смежности;
+	\item city.c -- файл для организации списка городов.
+\end{itemize}
+
+\section{Реализация алгоритмов}
+
+В листинге \ref{lst:con} представлен алгоритм полного перебора.
+
+\captionsetup{singlelinecheck = false, justification=raggedright}
+\begin{lstlisting}[label=lst:con,caption=Реализация алгоритма полного перебора]
+sarray get_shortest_path(sarray *cities, int matrix[N][N])
+{
+    sarray result[MAXRECURSION];
+    sarray res_;
+
+    int min_index = 0;
+    int min_cost;
+    int cur_cost;
+    
+    int len_routes = 0;
+	
+    del_element(cities, 0);
+    add_element(&res_, 0);
+
+    get_routes(cities, &res_, result, &len_routes);
+    min_cost = get_cost(result[min_index], matrix);
+
+    for (int i = 1; i < len_routes; i++)
+    {
+        cur_cost = get_cost(result[i], matrix);
+        if (cur_cost < min_cost)
+        {
+            min_cost = cur_cost;
+            min_index = i;
+        }
+    }
+    return result[min_index];
+}
+\end{lstlisting}
+
+В листинге \ref{lst:potok} представлен алгоритм нахождения всех перестановок в графе.
+
+\begin{lstlisting}[label=lst:potok,caption=Реализация алгоритма нахождения всех перестановок в графе]
+void get_routes(sarray *cities, sarray *res_,
+sarray result[MAXRECURSION], int *len)
+{
+	int element;
+	sarray buf;
+	
+	if (!cities->len)
+	{
+		add_element(res_, get_element(*res_, 0));
+		result[*len] = *res_;
+		(*len)++;
+		del_element(res_, res_->len - 1);
+	}
+
+	for (int i = 0; i < cities->len - 1; i++)
+	{
+		element = get_element(*cities, i);
+		add_element(res_, element);
+		buf = copy_array(*cities);
+		del_element(&buf, i);
+		get_routes(&buf, res_, result, len);
+		del_element(res_, res_->len - 1);
+	}
+}
+\end{lstlisting}
+
+В листинге \ref{lst:c1} представлена реализация муравьиного алгоритма.
+
+\begin{lstlisting}[label=lst:c1,caption=Реализация муравьиного алгоритма]
+sarray ant_alg(int matrix[N][N], int len, sarray cities, int tmax,
+float p, float alpha, float beta)
+{
+	int q = calc_q(matrix, len);
+	sarray best_way = copy_array(cities);
+	add_element(&best_way, get_element(best_way, 0));
+
+	int best_cost = get_cost(best_way, matrix);
+	int cur_cost = 0;
+	float matrix_p[N][N];
+
+	fill_matrix(matrix_p, len, MINPHENOM);
+	sant ants[MAXCOUNTOFANT];
+	
+	for (int t = 0; t < tmax; t++)
+	{
+		generate_ants_array(ants, len);
+		for (int i = 0; i < len - 1; i++)
+		{
+			ants_choose_way(ants, matrix_p, matrix, len, alpha, beta);
+		}
+		
+		for (int i = 0; i < len; i++)
+		{
+			add_element(&ants[i].way, get_element(ants[i].way, 0));
+		}
+
+		for (int i = 0; i < len; i++)
+		{
+			cur_cost = get_cost(ants[i].way, matrix);
+
+			if (cur_cost < best_cost)
+			{
+				best_cost = cur_cost;
+
+				best_way = copy_array(ants[i].way);
+			}
+		}
+
+		delete_phenom(matrix_p, len, p);
+		add_phenom(matrix, matrix_p, len, q, ants);
+		phenom_correct(matrix_p, len);
+	}
+	return best_way;
+}
+\end{lstlisting}
+
+В листинге \ref{lst:c2} представлена реализация алгоритма выбора оптимального пути для муравья.
+
+\begin{lstlisting}[label=lst:c2,caption=Реализация алгоритма выбора оптимального пути для муравья]
+void next_city(sant *ants, float matrix_p[N][N],
+int matrix[N][N], float alpha, float beta)
+{
+	float number = 0;
+	float denominator = 0;
+	float tao, rev_cost;
+	int cost;
+	int cur_city = ants->way.array[ants->way.len - 1];
+
+	for (int i = 0; i < ants->quere.len; i++)
+	{
+		cost = matrix[cur_city][ants->quere.array[i]];
+		tao = matrix_p[cur_city][ants->quere.array[i]];
+
+		if (!cost)
+			continue;
+		
+		rev_cost = 1.0 / cost;
+		denominator += powf(tao, alpha) + powf(rev_cost, beta);
+	}
+	
+	float p_array[N] = {0};
+	float sum = 0;
+
+	for (int i = 0; i < ants->quere.len; i++)
+	{
+		cost = matrix[cur_city][ants->quere.array[i]];
+		tao = matrix_p[cur_city][ants->quere.array[i]];
+
+		rev_cost = 1.0 / cost;
+		
+		p_array[i] = (powf(tao, alpha) + powf(rev_cost, beta)) / denominator;
+	}
+	
+	float x = (float)rand() / RAND_MAX;
+	int index = 0;
+	
+	while (x >= 0)
+	{
+		x -= p_array[index];
+		index++;
+	}
+	
+	add_element(&ants->way, get_element(ants->quere, index - 1));
+	del_element(&ants->quere, index - 1);
+}
+\end{lstlisting}
+
+В листинге \ref{lst:c3} представлена реализация вспомогательных функций.
+
+\begin{lstlisting}[label=lst:c3,caption=Вспомогательные функции]
+void add_phenom(int matrix[N][N], float matrix_p[N][N], int len,
+int q, sant ants[MAXCOUNTOFANT])
+{
+	int fcity, scity;
+	int cur_cost;
+	float dtao = 0;
+
+	for (int i = 0; i < len; i++)
+	{
+		cur_cost = get_cost(ants[i].way, matrix);
+		dtao += (float)q / cur_cost;
+	}
+	
+	for (int i = 0; i < len; i++)
+	{
+		for (int j = 0; j < ants[i].way.len - 1; j++)
+		{
+			fcity = ants[i].way.array[j];
+			scity = ants[i].way.array[j + 1];
+			
+			matrix_p[fcity][scity] = matrix_p[fcity][scity] + dtao;
+			matrix_p[scity][fcity] = matrix_p[scity][fcity] + dtao;
+		}
+	}
+}
+
+void delete_phenom(float matrix_p[N][N], int len, float p)
+{
+	float qq = 1 - p;
+
+	for (int i = 0; i < len; i++)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			matrix_p[i][j] = matrix_p[i][j] * qq;
+			matrix_p[j][i] = matrix_p[j][i] * qq;
+		}
+	}
+}
+
+void phenom_correct(float matrix_p[N][N], int len)
+{
+	for (int i = 0; i < len; i++)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			if (matrix_p[i][j] <= 0.1)
+			{
+		    	matrix_p[i][j] = matrix_p[j][i] = 0.1;
+			}
+		}
+	}
+}
+\end{lstlisting}
+
+\captionsetup{singlelinecheck = false, justification=centering}
+
+\section{Тестирование}
+В таблице~\ref{tabular:test_rec} приведены тесты для функции, реализующей алгоритм для решения задачи коммивояжера (алгоритм полного перебора и муравьиный алгоритм). Тесты пройдены успешно.
+
+При тестировании муравьиного алгоритма тесты прошли успешно, так как матрицы смежности маленькие, и поэтому муравьиный алгоритм работает без видимых ошибок, то есть выдает такие же результаты как и алгоритм полного перебора.
+
+Ошибки в результатах муравьиного алгоритма чаще всего возникают при больших размерах матриц (начиная от 9х9). Погрешности бывают чаще всего как разность между наименьшим путем и предпоследним (тот который мог бы быть наименьшим).
+
+\begin{table}[h!]
+	\begin{center}
+		
+		\caption{\label{tabular:test_rec} Тестирование функций}
+		\begin{tabular}{c@{\hspace{5mm}}c@{\hspace{5mm}}c@{\hspace{5mm}}c@{\hspace{7mm}}c@{\hspace{7mm}}c@{\hspace{7mm}}}
+			\hline
+			Матрица смежности & Ожидаемый результат & Действительный результат \\ \hline
+			\vspace{4mm}
+			$\begin{pmatrix}
+			0 &  1 &  10 &  7\\
+			1 &  0 &  1 &  2\\
+			10 &  1 &  0 &  1\\
+			7 &  2 &  1 &  0
+			\end{pmatrix}$ &
+			10, [0, 1, 2, 3, 0]&
+			10, [0, 1, 2, 3, 0]\\
+			\vspace{2mm}
+			\vspace{2mm}
+			$\begin{pmatrix}
+			0 &  3 &  5 &  7\\
+			7 &  0 &  1 &  2\\
+			5 &  1 &  0 &  1\\
+			7 &  2 &  1 &  0
+			\end{pmatrix}$ &
+			11, [2, 3, 1, 0, 2]&
+			11, [2, 3, 1, 0, 2]\\
+			\vspace{2mm}
+			\vspace{2mm}
+			$\begin{pmatrix}
+			0 &  3 &  5\\
+			3 &  0 &  1\\
+			5 &  1 &  0
+			\end{pmatrix}$ &
+			9, [0, 1, 2, 0]&
+			9, [0, 1, 2, 0]\\
+		\end{tabular}
+	\end{center}
+\end{table}
+\newpage
+
+\section{Вывод}
+В данном разделе были представлены реализации алгоритма полного перебора и муравьиного алгоритма, а также протестированы. 
