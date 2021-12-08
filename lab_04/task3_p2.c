@@ -21,15 +21,28 @@ void revstr(register char * str){
     *(str + len) = '\0';
 }
 
+
+void read_string(char *str)
+{
+    printf("Input string (max len = 16): ");
+    if (scanf("%s", str) != 1)
+    {
+        printf("Error, input only string (max len = 16)\n");
+    }
+}
+
+
 void main()
 {
-    char str[] = "BMSTU IU7-52";
+    // char str[] = "BMSTU IU7-52";
+    char str[N];
     
-    printf("\n proc 2 (reverse str) START\n");
+    printf("\n !proc 2 (reverse str) START\n");
+    read_string(str);
     printf("String before reverse: %s\n", str);
 
     revstr(str);
 
     printf("String after reverse: %s", str);
-    printf("\n proc 2 (reverse str) END\n\n");
+    printf("\n !proc 2 (reverse str) END\n\n");
 }
