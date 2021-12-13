@@ -6,7 +6,7 @@
 #include <sys/sem.h>
 #include <sys/stat.h>
 
-//#define ALPHABET "abcdefghijklmnopqrstuvwxyz"
+#define ALPHABET "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
 
 // различные флаги
 //#define PERMS S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
@@ -19,7 +19,8 @@
 // производитель производит по 8 товара
 // всего производителей 3
 // получаем 24 ячейки памяти надо
-#define N 24
+#define ITERATIONS_AMOUNT 8
+#define N 30
 #define COUNT_PRODUCER 3
 #define COUNT_CONSUMER 3
 

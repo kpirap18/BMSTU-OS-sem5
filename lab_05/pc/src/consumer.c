@@ -39,7 +39,7 @@ void consumer_run(buffer_s* const buffer, const int sem_id, const int con_id)
         perror("Something went wrong with buffer reading!");
         exit(-1);
     }
-    printf(" \e[1;31mConsumer #%d \tread:  \t%c \tsleep: %d\e[0m\n", con_id, ch, sleep_time);
+    printf(" \e[1;33mConsumer #%d \tread:  \t%c \tsleep: %d\e[0m\n", con_id, ch, sleep_time);
     // Закончилась критическая зона
 
 	rv = semop(sem_id, ConsumerEnd, 2);
@@ -65,7 +65,7 @@ void consumer_create(buffer_s* const buffer, const int con_id, const int sem_id)
 
 		// Каждый потребитель потребляет
 		// ITERATIONS_AMOUNT товаров.
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < ITERATIONS_AMOUNT; i++)
 			consumer_run(buffer, sem_id, con_id);
 
 		exit(0);

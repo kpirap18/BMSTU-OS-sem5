@@ -8,22 +8,25 @@
 
 extern int *counter;
 
-struct sembuf StartRead[3] = 
+struct sembuf StartRead[5] = 
 {
-	{WAIT_WRITERS, S, 0},     // Пропускает всех ожидающих запись писателей.
-	{CAN_READ, S, 0},         // Ждет, пока писатель допишет.
-	{ACTIVE_READERS, V, 0}    // Увеличивает кол-во активных читателей.
+	{CAN_READ, V, 0},         
+	{WAIT_WRITERS, S, 0},     // проверка, если ли ждущие писатели
+	{CAN_WRITE, S, 0},         // проверка, что писатель не пишет
+	{ACTIVE_READERS, V, 0},    // инкремент активных читателей
+	{CAN_READ, P, 0}
 };
 
 struct sembuf StopRead[1] = 
 {
-	{ACTIVE_READERS, P, 0}    // Уменьшает кол-во активных читателей.
+	{ACTIVE_READERS, P, 0}    // Декремент активных читателей
 };
+
 
 
 int start_read(int sem_id) 
 {
-    return semop(sem_id, StartRead, 3);
+    return semop(sem_id, StartRead, 5);
 }
 
 int stop_read(int sem_id) 
@@ -45,7 +48,7 @@ void reader_run(const int sem_id, const int reader_id)
 	}
 
 	// Началась критическая зона
-	printf("\e[1;31mReader #%d \tread: \t%d \tsleep: %d\e[0m \n", 
+	printf("\e[1;33mReader #%d \tread: \t%d \tsleep: %d\e[0m \n", 
 				reader_id, *counter, sleep_time);
 	// Закончилась критическая зона
 	
@@ -68,6 +71,7 @@ void reader_create(const int sem_id, const int reader_id)
 	else if (childpid == 0)
 	{
 		// Это процесс потомок.
+		//for (int i = 0; i < 4; i++)
 		while (1)
 			reader_run(sem_id, reader_id);
 		exit(0);

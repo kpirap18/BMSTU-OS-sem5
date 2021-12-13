@@ -56,7 +56,30 @@ int main(void)
 // Функция semctl() позволяет изменять управляющие параметры набора семафоров
 // указанным в semid(1 арг) или над семафором с номером semnum(2 арг) из этого набора.
 // https://www.opennet.ru/man.shtml?topic=semctl&category=2&russian=0 
-    semctl(sem_descr, CAN_WRITE, SETVAL, 0);
+    if (semctl(sem_descr, CAN_WRITE, SETVAL, 0) == -1)
+	{
+		perror( "!!! Can't set control semaphors." );
+		return -1;
+	}
+
+	if (semctl(sem_descr, CAN_READ, SETVAL, 0) == -1)
+	{
+		perror( "!!! Can't set control semaphors." );
+		return -1;
+	}
+
+	if (semctl(sem_descr, ACTIVE_READERS, SETVAL, 0) == -1)
+	{
+		perror( "!!! Can't set control semaphors." );
+		return -1;
+	}
+
+    if (semctl(sem_descr, WAIT_WRITERS, SETVAL, 0) == -1)
+	{
+		perror( "!!! Can't set control semaphors." );
+		return -1;
+	}
+
 
     for (int i = 0; i < READERS_COUNT; i++)
 		reader_create(sem_descr, i + 1);
@@ -71,5 +94,11 @@ int main(void)
 	if (shmdt(counter) == -1)
 		perror("Ошибка при попытке отключить разделяемый сегмент от адресного пространства процесса.");
 	
+	if (semctl(sem_descr, 0, IPC_RMID, 0) == -1)
+	{
+		perror("Ошибка при попытке удаления семафора.");
+		return -1;
+	}
+
     return 0;    
 }

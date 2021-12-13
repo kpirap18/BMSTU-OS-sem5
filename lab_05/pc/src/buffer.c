@@ -16,7 +16,7 @@ int write_buffer(buffer_s* const buffer, const char elem)
         return -1;
 
     buffer->data[buffer->wpos++] = elem;
-    buffer->wpos %= N;
+    buffer->wpos += 1;
     return 0;
 }
 
@@ -26,6 +26,6 @@ int read_buffer(buffer_s* const buffer, char* const dest)
         return -1;
 
     *dest = buffer->data[buffer->rpos++];
-    buffer->rpos %= N;
+    buffer->rpos += 1;
     return 0;
 }

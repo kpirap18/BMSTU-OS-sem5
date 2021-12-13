@@ -5,7 +5,6 @@
 #include <sys/stat.h>
 #include <sys/shm.h>
 #include "constants.h"
-#include "delay.h"
 #include "buffer.h"
 
 void producer_run(buffer_s* const buffer, const int sem_id, const int pro_id);

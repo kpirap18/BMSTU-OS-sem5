@@ -1,27 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/ipc.h>
 #include <sys/sem.h>
 #include <sys/shm.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include <time.h>
 #include <wait.h>
+#include <unistd.h>
+#include <sys/stat.h>
 
 #include "buffer.h"
 #include "constants.h"
-#include "delay.h"
 #include "producer.h"
 #include "concumer.h"
-
-struct sembuf init_value[2] = 
-{
-	{SB, 1, 0}, // SB изначально установлен в 1.
-	{SE, N, 0}  // SE изначально равно N.
-};
-
 
 int main(void)
 {
@@ -73,15 +62,23 @@ int main(void)
 		return -1;
 	}
 	
-	int ctrl_sb = semctl(sem_descr, SB, SETVAL, 1);
-    int ctrl_se = semctl(sem_descr, SE, SETVAL, N);
-    int ctrl_sf = semctl(sem_descr, SF, SETVAL, 0);
-	if ( ctrl_se == -1 || ctrl_sf == -1 || ctrl_sb == -1)
+	if (semctl(sem_descr, SB, SETVAL, 1) == -1)
 	{
 		perror( "!!! Can't set control semaphors." );
-		exit(-1);
+		return -1;
 	}
 
+    if (semctl(sem_descr, SE, SETVAL, N) == -1)
+	{
+		perror( "!!! Can't set control semaphors." );
+		return -1;
+	}
+
+    if (semctl(sem_descr, SF, SETVAL, 0) == -1)
+	{
+		perror( "!!! Can't set control semaphors." );
+		return -1;
+	}
 
     for (int i = 0; i < COUNT_PRODUCER; i++)
 	{
@@ -99,7 +96,7 @@ int main(void)
         if (wait(&status) == -1) 
 		{
             perror("Something wrong with children waiting!");
-            exit(-1);
+            return -1;
         }
         if (!WIFEXITED(status))
             printf("One of children terminated abnormally\n");
@@ -120,7 +117,7 @@ int main(void)
 		return -1;
 	}
 
-	if (semctl(sem_descr, 0, IPC_RMID) == -1)
+	if (semctl(sem_descr, 0, IPC_RMID, 0) == -1)
 	{
 		perror("Ошибка при попытке удаления семафора.");
 		return -1;

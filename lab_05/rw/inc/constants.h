@@ -18,10 +18,10 @@
 #define WRITER_SLEEP_TIME 2
 
 // Семафоры:
-#define ACTIVE_READERS  0 // READER Кол-во активных читателей;
-#define CAN_READ        1 // CAN_WRITE Читатель может читать? (есть ли активный писатель)
-#define CAN_WRITE       2 // CAN_WRITE - писатель может записать? - 1(да)/0(нет);
-#define WAIT_WRITERS    3 // WAIT_WRITERS - Кол-во ожидающий писателей, которые хотят записать.
+#define ACTIVE_READERS  0 // Кол-во активных читателей;
+#define CAN_READ        1 // Читатель может читать? (есть ли активный писатель)
+#define CAN_WRITE       2 // писатель может записать?
+#define WAIT_WRITERS    3 // Кол-во ожидающий писателей, которые хотят записать.
 
 // Операции над семафорами:
 #define P -1 // Пропустить;

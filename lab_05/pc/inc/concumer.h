@@ -5,7 +5,6 @@
 #include <sys/sem.h>
 
 #include "constants.h"
-#include "delay.h"
 #include "buffer.h"
 
 

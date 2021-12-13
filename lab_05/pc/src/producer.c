@@ -36,7 +36,8 @@ void producer_run(buffer_s* const buffer, const int sem_id, const int pro_id)
 
 	// Началась критическая зона
 	// Положить в буфер.
-	const char symb = (buffer->wpos % 26) + 'a';
+	//const char symb = buffer->wpos % 26 + 'a';
+	const char symb = ALPHABET[buffer->wpos];
     if (write_buffer(buffer, symb) == -1) 
 	{
         exit(-1);
@@ -67,7 +68,7 @@ void producer_create(buffer_s* const buffer, const int pro_id, const int sem_id)
 
 		// Каждый производитель производит
 		// ITERATIONS_AMOUNT товаров.
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < ITERATIONS_AMOUNT; i++)
 			producer_run(buffer, sem_id, pro_id);
 
 		exit(0);
